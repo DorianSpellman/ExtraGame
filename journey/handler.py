@@ -1,17 +1,22 @@
-import json
-from random import  choice
+import aiohttp
+from aiohttp import web
+from aiohttp.client import request
+from random import randint, shuffle, choice
 
+HOST_IP = "0.0.0.0"
+HOST_PORT = 1288
 
-def webhook(event, context):
-    request_message = json.loads(event['body'])
-    response = handler_function(request_message)
-    return {
-        "statusCode": 200,
-        "body": json.dumps(response)
-    }
+# def webhook(event, context):
+#     request_message = json.loads(event['body'])
+#     response = handler_function(request_message)
+#     return {
+#         "statusCode": 200,
+#         "body": json.dumps(response)
+#     }
 
 stories = [] # Рассказы
 state = 0  # Состояния
+exercises_description = ''
 
 def handler_function(request):
     global state
@@ -20,15 +25,17 @@ def handler_function(request):
     end_session = False
     message = ''
     session = request['session']
+    version = request['version']
     request = request['request']
     list_of_request = request['nlu']['tokens']
 
     if session['new'] or state == 0:
-        with open('steps.txt') as fin:   
+        with open('steps.txt', newline='', encoding="utf-8") as fin:   
             stories = fin.readlines()
+            shuffle(stories)
 
 ### Приветствие
-        message = "Привет! \n Новый год - чудесное время года! \n Хотите отправиться в путешествие по этому празднику и узнать о нём больше?"   
+        message = "Привет! \n Новый год - чудесное время года! \n Хочите отправиться в путешествие по этому празднику и узнать о нём больше?"   
         buttons = [button('Да!'), button('Не сейчас')]
         state = 1
 
@@ -63,7 +70,7 @@ def handler_function(request):
             state = 2
         ### завершение путешествия
         else:
-            state = 8
+            state = 10
 
 ### Символ года
 
@@ -81,29 +88,10 @@ def handler_function(request):
             state = 3
         ### завершение путешествия
         else:
-            state = 8
-
-### Новый год в разных странах
-
-    elif state == 4 and stories:
-        story = stories[0] # запоминаем следующий рассказ
-        stories.pop(0) # извлекаем его
-        message += story # воспроизведение истории
-        buttons = [button('Вперёд!'), button('Завершить путешествие')]
-        state = 4 
-        ### перепрыгивание на следующее
-        if 'следующее' in list_of_request or 'дальше' in list_of_request or 'вперёд' in list_of_request:
-            state = 5
-        ### повтор рассказа
-        elif 'назад' in list_of_request or 'повтори' in list_of_request or 'ещё раз' in list_of_request:
-            state = 4
-        ### завершение путешествия
-        else:
-            state = 8
-### 
+            state = 10
 
 
-   
+    
 
 ### Конец
 
@@ -143,14 +131,28 @@ def handler_function(request):
         },
         "session": 
         {
-            derived_key: request['session'][derived_key] for derived_key 
+            derived_key: session[derived_key] for derived_key 
             in ['session_id', 'user_id', 'message_id']
         },
-            "version": request['version']
+            "version": version
     }
     return response_message
 
 ### кнопка
 def button(title):
     return {"title": title}
+
+async def webhook(request_obj):
+    request_message = await request_obj.json()
+    response = handler_function(request_message)
+
+    return web.json_response(response)
+
+def init():
+    app = web.Application() # создаём приложение и кладём в новую переменную
+    app.router.add_post("/webhook", webhook)
+    web.run_app(app, host = HOST_IP, port =  HOST_PORT)
+
+if __name__ == "__main__":
+    init()
 
