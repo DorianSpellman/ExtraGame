@@ -93,7 +93,7 @@ def handler_function(request):
             state = 30
 
         ### завершение путешествия
-        elif 'завершить' in list_of_request or 'заверши'in list_of_request or 'закончи' in list_of_request or 'закончить' in list_of_request:
+        elif 'завершить' in list_of_request or 'заверши'in list_of_request or 'закончи' in list_of_request  or 'хватит' in list_of_request or 'стоп' in list_of_request:
             state = 80
             
         else:
@@ -119,7 +119,7 @@ def handler_function(request):
             state = 40
 
         ### завершение путешествия
-        elif 'завершить' in list_of_request or 'заверши'in list_of_request or 'закончи' in list_of_request or 'закончить' in list_of_request:
+        elif 'завершить' in list_of_request or 'заверши'in list_of_request or 'закончи' in list_of_request or 'закончить' in list_of_request or 'хватит' in list_of_request or 'стоп' in list_of_request:
             state = 80
 
         else:
@@ -153,7 +153,7 @@ def handler_function(request):
             state = 50
 
         ### завершение путешествия
-        elif 'завершить' in list_of_request or 'заверши'in list_of_request or 'закончи' in list_of_request or 'закончить' in list_of_request:
+        elif 'завершить' in list_of_request or 'заверши'in list_of_request or 'закончи' in list_of_request or 'закончить' in list_of_request or 'хватит' in list_of_request or 'стоп' in list_of_request:
             state = 80
 
         else:
@@ -187,7 +187,7 @@ def handler_function(request):
             state = 60
 
         ### завершение путешествия
-        elif 'завершить' in list_of_request or 'заверши'in list_of_request or 'закончи' in list_of_request or 'закончить' in list_of_request:
+        elif 'завершить' in list_of_request or 'заверши'in list_of_request or 'закончи' in list_of_request or 'закончить' in list_of_request or 'хватит' in list_of_request or 'стоп' in list_of_request:
             state = 80
         
         else:
@@ -229,7 +229,7 @@ def handler_function(request):
             state = 80
 
         ### завершение путешествия
-        elif 'завершить' in list_of_request or 'заверши'in list_of_request or 'закончи' in list_of_request or 'закончить' in list_of_request:
+        elif 'завершить' in list_of_request or 'заверши'in list_of_request or 'закончи' in list_of_request or 'закончить' in list_of_request or 'хватит' in list_of_request or 'стоп' in list_of_request:
             state = 80
 
         else:
@@ -263,7 +263,7 @@ def handler_function(request):
             buttons = [button('Да!'), button('Не сейчас')]
 
     if state == 95:
-        if 'готово' in list_of_request or 'сделал' in list_of_request or 'загадал' in list_of_request or 'не' in list_of_request:
+        if 'готово' in list_of_request or 'сделал' in list_of_request or 'загадал' in list_of_request or 'не' in list_of_request or 'хватит' in list_of_request or 'стоп' in list_of_request:
             state = 110
                 
 
