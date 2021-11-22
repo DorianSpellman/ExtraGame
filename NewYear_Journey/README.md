@@ -1,2 +1,1 @@
-# Heroku1
-New-year-journey
+# New-year-journey
